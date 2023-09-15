@@ -1,124 +1,214 @@
 <style>
-	.switcher-sm .btn{
-		font-size: 0.9rem !important;
-	}
-	#map{
-		/* display: flex;
+.switcher{
+	padding:0.25rem 2rem;
+	background-color: #444;
+}
+.switcher-sm .btn {
+	font-size: 0.9rem !important;
+	margin: .5rem 0.125rem;
+}
+
+.btns-row{
+	border: 1px solid #555;
+	border-radius: 1rem;
+	margin: .5rem 0;
+	padding: .25rem 1rem;
+}
+.btns-row .row-label{
+	font-size: 1.35rem;
+	padding-right: 2rem;
+}
+
+#map {
+	/* display: flex;
 		justify-content: space-around; */
-	}
-	#map #map-stats{
-		border: 1px solid pink;
-		width: 50%;
-		margin: 0 5px;
-		max-height: 80vh;
-		overflow:hidden;
-	}
-	#map-container {
-		display:flex;
-		justify-content: center;
-	}
-	.map-boundary path.state-boundary{
-		stroke-linejoin: round;
-		stroke-width: 0.5;
-		stroke:rgba(0, 0, 0, 1);
-		fill: none;
-	}
-	.map-boundary path:not(.state-boundary){
-		stroke-linejoin: round;
-		stroke-width: .25;
-		stroke:rgba(0, 0, 0, 0.5);
-	}
-	.map-boundary path:not(.state-boundary):hover{
-		cursor: pointer;
-		fill: beige;
-	}
-	.map-boundary .current-state{
-		stroke: rgba(0,50,255,.75);
-		stroke-width:.25px;
-		filter: brightness(1.25)
-	}
-	.map-boundary .selected-polygon{
-		/*fill: #afa;*/
-		fill: #ffff55;
-		stroke: rgba(255,50,0,.75);
-		stroke-width:.5px;
-	}
-	.poly_text{
-		fill: #545;
-		font-size: 0.85rem;
-		transition: fill .125s;
-		text-shadow: 
+}
+
+#map #map-stats {
+	border: 1px solid pink;
+	width: 50%;
+	margin: 0 5px;
+	max-height: 80vh;
+	overflow: hidden;
+}
+
+#map-container {
+	display: flex;
+	justify-content: center;
+}
+
+.map-boundary path.state-boundary {
+	stroke-linejoin: round;
+	stroke-width: 0.5;
+	stroke: rgba(0, 0, 0, 1);
+	fill: none;
+}
+
+.map-boundary path:not(.state-boundary) {
+	stroke-linejoin: round;
+	stroke-width: .25;
+	stroke: rgba(0, 0, 0, 0.5);
+}
+
+.map-boundary path:not(.state-boundary):hover {
+	cursor: pointer;
+	fill: beige;
+}
+
+.map-boundary .current-state {
+	stroke: rgba(0, 50, 255, .75);
+	stroke-width: .25px;
+	filter: brightness(1.25)
+}
+
+.map-boundary .selected-polygon {
+	/*fill: #afa;*/
+	fill: #ffff55;
+	stroke: rgba(255, 50, 0, .75);
+	stroke-width: .5px;
+}
+
+.poly_text {
+	fill: #545;
+	font-size: 0.85rem;
+	transition: fill .125s;
+	text-shadow:
 		0px 0px 1px white,
 		0px 0px 2px white,
 		0px 0px 3px white,
 		0px 0px 4px white,
 		0px 0px 5px white;
-	}
-	.poly_text:hover{
-		fill: #00c;
-		text-shadow: 0px 0px 5px #fff;
-		cursor: pointer;
-		font-weight: 1000;
-	}
-    .map-points circle{
-		stroke-width: .5px;
-		stroke: rgba(0,0,0,.25);
-		fill: transparent;
-	}
-	.map-points circle:hover{
-		cursor:pointer;
-		stroke: rgba(0,255,0,.5);
-	}
-	svg{
-		background: hsl(200, 50%, 75%);
-	}
-	.small-text{
-		font-size: .85rem;
-	}
-	.legendCells:after{
-		content: "";
-		display:block;
-		width: 100%;
-		height: 100%;
-		background-color: #ffffff;
-  		border: 1px solid black;
-	}
-	.selected-polygon{
-		stroke: red !important;
-		stroke-width: 1.5px !important;
-		z-index: 100;
-	}
-	.legendCells .cell text{
-		display: flex;
-  		align-items: center;
-	}
-    .d3-tooltip table,
-    .d3-tooltip tr,
-    .d3-tooltip td{
-        font-size: 0.85rem;
-        border: 1px solid white;
-        background: black;
-    }
-    .d3-tooltip td{
-        padding: .5rem 1rem;
-    }
+}
+
+.poly_text:hover {
+	fill: #00c;
+	text-shadow: 0px 0px 5px #fff;
+	cursor: pointer;
+	font-weight: 1000;
+}
+
+.map-points circle {
+	stroke-width: .5px;
+	stroke: rgba(0, 0, 0, .25);
+	fill: transparent;
+}
+
+.map-points circle:hover {
+	cursor: pointer;
+	stroke: rgba(0, 255, 0, .5);
+}
+
+svg {
+	background: hsl(200, 50%, 75%);
+}
+
+.small-text {
+	font-size: .85rem;
+}
+
+.legendCells:after {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	border: 1px solid black;
+}
+
+.selected-polygon {
+	stroke: red !important;
+	stroke-width: 1.5px !important;
+	z-index: 100;
+}
+
+.legendCells .cell text {
+	display: flex;
+	align-items: center;
+}
+
+.d3-tooltip table,
+.d3-tooltip tr,
+.d3-tooltip td {
+	font-size: 0.85rem;
+	border: 1px solid white;
+	background: black;
+}
+
+.d3-tooltip td {
+	padding: .5rem 1rem;
+}
+
+.mx-5{
+	margin: 0 3.5rem !important;
+}
 </style>
 
 <template>
-    <div class="switcher switcher-sm text-center py-2 bg-dark">
-        <button
-            class="btn mx-1"
-            v-for="pm in modes"
-            :key="pm"
-            :class="pm === mode ? 'btn-success' : 'btn-outline-success bg-light'"
-            @click="mode = pm"
-            v-text="pm"
-        />
-    </div>
+	<div class="switcher switcher-sm text-center py-2 bg-dark">
+		<div class="btns-row">
+			<span class="row-label">Map Mode</span>
+			<button
+				class="btn"
+				v-for="pm in modes"
+				:key="pm"
+				:class="pm === mode ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="mode = pm"
+				v-text="capitalizeWords(pm)"
+			/>
+		</div>
+		<div class="btns-row">
+			<span class="row-label">Year</span>
+			<button
+				class="btn"
+				:class="year === null ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="year = null"
+				v-text="`All`"
+			/>
+			<button
+				class="btn"
+				v-for="y in years"
+				:key="y"
+				:class="y === year ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="year = y"
+				v-text="y"
+			/>
+			<button class="btn mx-5" @click="toggleCycle">{{ isCycling ? 'Pause' : 'Play' }}</button>
+		</div>
+		<div class="btns-row" v-if="mode == 'states'">
+			<span class="row-label">ID level</span>
+			<button
+				class="btn"
+				:class="taxa_level === null ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="taxa_level = null"
+				v-text="`All`"
+			/>
+			<button
+				class="btn"
+				v-for="tl in taxa_levels"
+				:key="tl"
+				:class="tl === taxa_level ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="taxa_level = tl"
+				v-text="capitalizeWords(tl)"
+			/>
+		</div>
+		<div class="btns-row" v-if="mode == 'states'">
+			<span class="row-label">Map Labels</span>
+			<button
+				class="btn"
+				v-for="l in labels"
+				:key="l"
+				:class="l === label ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="label = l"
+				v-text="capitalizeWords(l)"
+			/>
+		</div>
+
+	</div>
 	<div id="map">
-        <div id="map-container"></div>
-    </div>
-	{{ map_data }}
+		<div id="map-container"></div>
+	</div>
+	{{ map_data.size }}
+
 </template>
 
 
@@ -133,6 +223,17 @@ const store = useStore()
 
 const modes = ["states", "districts"]
 const mode = ref("states")
+const years = [2020, 2021, 2022, 2023]
+const year = ref(null)
+const isCycling = ref(false)
+let cycle_interval = null
+const taxa_levels = ref(["superfamily","family","subfamily","tribe", "genus","species"])
+const taxa_level = ref(null)
+
+const labels = ["observations", "users", "taxa"]
+const label = ref("observations")
+
+
 const polygons = ref(null)
 const path = ref(null)
 const svg = ref(null)
@@ -146,13 +247,35 @@ const legend = ref(null)
 const zoomTransform = ref(0)
 
 const all_observations = computed(() => store.state.all_observations)
+const all_taxa = computed(() => store.state.taxa)
 const geojsons = computed(() => store.state.geojsons)
 
+const filtered_observations = computed(() => {
+	let op = all_observations.value
+	if (year.value) {
+		op = op.filter((d) => {
+			const date = d.date.split("-")
+			return parseInt(date[0]) == year.value
+		})
+	}
+	console.log(taxa_level.value)
+	if(taxa_level.value){
+		op = op.filter((d) => {
+			const taxa = all_taxa.value.find((t) => t.id == d.taxa)
+			if(taxa && taxa.rank == taxa_level.value){
+				return true
+			}
+			return false
+		})
+	}
+	return op
+})
+
 const map_data = computed(() => {
-	if(mode.value == "states"){
-		return d3.rollup(all_observations.value, (v) => v.length, (d) => d.state)
-	} else if(mode.value == "districts"){
-		return d3.rollup(all_observations.value, (v) => v.length, (d) => d.district)
+	if (mode.value == "states") {
+		return d3.rollup(filtered_observations.value, (v) => v.length, (d) => d.state)
+	} else if (mode.value == "districts") {
+		return d3.rollup(filtered_observations.value, (v) => v.length, (d) => d.district)
 	}
 	return []
 })
@@ -169,17 +292,18 @@ const mode_key = computed(() => {
 const zoom = computed(() => {
 	return d3.zoom()
 		.scaleExtent([0.5, 250])
-		.translateExtent([[-0.5 * width.value,-0.75 * height.value],[2.5 * width.value, 2.5 * height.value]])
+		.translateExtent([[-0.5 * width.value, -0.75 * height.value], [2.5 * width.value, 2.5 * height.value]])
 		.on('zoom', handleZoom)
 })
 
 const geojson = computed(() => geojsons.value[mode.value])
 watch(geojson, () => init())
+watch(filtered_observations, () => init())
+watch(label, () => init())
 
-const init = () =>{
+const init = () => {
 	console.log("init")
-	if(geojson.value && geojson.value.features){
-		console.log("Yes geojson")
+	if (geojson.value && geojson.value.features) {
 		init_variables()
 		init_tooltip()
 		init_legend()
@@ -196,7 +320,7 @@ const init_variables = () => {
 	svg.value = {}
 	height.value = window.innerHeight * 0.8
 	width.value = window.innerWidth
-	if(window.innerWidth < 800){
+	if (window.innerWidth < 800) {
 		height.value = window.innerHeight * 0.6
 		projection.value = d3.geoMercator().scale(600).center([110, 20])
 	} else {
@@ -227,7 +351,7 @@ const init_tooltip = () => {
 const init_legend = () => {
 	max.value = Math.max(...map_data.value.values())
 	colors.value = d3.scaleLinear()
-		.domain([0,1, max.value/3, max.value])
+		.domain([0, 1, max.value / 3, max.value])
 		.range(["#c33", "#488", "#fd0", "#24ff00"])
 		.clamp(true)
 	legend.value = d3Legend.legendColor()
@@ -241,25 +365,25 @@ const init_legend = () => {
 		.cells(6)
 }
 
-const init_svg = () =>{
+const init_svg = () => {
 	if (!d3.select("#map-container svg.svg-content").empty()) {
 		d3.select("#map-container svg.svg-content").remove()
 	}
 
 	svg.value = d3.select("#map-container")
 		.append("svg")
-			.attr("preserveAspectRatio", "xMinYMin meet")
-			.attr("width", width.value)
-			.attr("height", height.value)
-			.classed("svg-content", true)
+		.attr("preserveAspectRatio", "xMinYMin meet")
+		.attr("width", width.value)
+		.attr("height", height.value)
+		.classed("svg-content", true)
 
-	if(!zoomTransform.value){
-		zoomTransform.value =  d3.zoomTransform(svg.value.node())
+	if (!zoomTransform.value) {
+		zoomTransform.value = d3.zoomTransform(svg.value.node())
 	}
 
-	if(height.value > width.value){
+	if (height.value > width.value) {
 		legend.value.shapeWidth(35)
-		.cells(4)
+			.cells(4)
 	}
 }
 
@@ -270,72 +394,82 @@ const render_map = () => {
 		.classed("map-labels", true)
 	polygons.value = base.append("g")
 		.classed("polygons", true)
-	
+
 	geojson.value.features.forEach((polygon) => {
 		drawPolygon(polygon)
-		if(mode.value == "states"){
+		if (mode.value == "states") {
 			drawPolygonLabel(base_text, polygon)
 		}
 	})
-	
+
 	svg.value.append("g")
 		.attr("class", "legend")
 		.attr("transform", `translate(${width.value * .5}, 25)`)
 		.call(legend.value)
-	
+
 	svg.value.call(zoom.value)
 
 	svg.value.call(zoom.value.transform, zoomTransform.value)
 }
 
-const drawPolygon = (polygon) =>{
+const drawPolygon = (polygon) => {
 	polygons.value
 		.append("g")
 		.selectAll("path")
 		.data([polygon])
 		.enter()
-			.append("path")
-			.attr("d", (d) => path.value(d))
-			.attr("id", (d) => getPolygonId(d.properties[mode_key.value]))
-			.attr("fill", (d) => color_polygon(d.properties))
-			.on('mouseover', (d, i) => {
-				tooltip.value.html(hover_text(i.properties))
-					.style('visibility', 'visible')
-			})
-			.on('mousemove', (event, d) => {
-				tooltip.value
-					.style('top', event.pageY - 10 + 'px')
-					.style('left', event.pageX + 10 + 'px')
-			})
-			.on('mouseout', () => tooltip.value.html(``).style('visibility', 'hidden'))
+		.append("path")
+		.attr("d", (d) => path.value(d))
+		.attr("id", (d) => getPolygonId(d.properties[mode_key.value]))
+		.attr("fill", (d) => color_polygon(d.properties))
+		.on('mouseover', (d, i) => {
+			tooltip.value.html(hover_text(i.properties))
+				.style('visibility', 'visible')
+		})
+		.on('mousemove', (event, d) => {
+			tooltip.value
+				.style('top', event.pageY - 10 + 'px')
+				.style('left', event.pageX + 10 + 'px')
+		})
+		.on('mouseout', () => tooltip.value.html(``).style('visibility', 'hidden'))
 }
 
 const drawPolygonLabel = (base_text, polygon) => {
-	const observations = getObservationsNo(polygon.properties[mode_key.value])
+	let number = 0
+	switch(label.value){
+		case "observations": number = getObservationsNo(polygon.properties[mode_key.value])
+			break
+		case "users": number = getUsersNo(polygon.properties[mode_key.value])
+			break
+		case "taxa": number = getTaxaNo(polygon.properties[mode_key.value])
+			break
+		
+	}
+	
 	base_text
 		.append("g")
 		.selectAll("text")
 		.data([polygon])
 		.enter()
-			.append("text")
-			.classed("poly_text", true)
-			.attr("x", (h) => path.value.centroid(h)[0] )
+		.append("text")
+		.classed("poly_text", true)
+		.attr("x", (h) => path.value.centroid(h)[0])
 
-			.attr("y", (h) => path.value.centroid(h)[1] )
-			.classed("small-text", true)
-			.attr("text-anchor", "middle")
-			.text(observations)
-			.on('mouseover', (d, i) => {
-				tooltip.value.html(hover_text(i.properties))
-					.style('visibility', 'visible')
-			})
-			.on('mousemove', (event, d) => {
-				tooltip.value
-					.style('top', event.pageY - 10 + 'px')
-					.style('left', event.pageX + 10 + 'px')
-			})
-			.on('mouseout', () => tooltip.value.html(``).style('visibility', 'hidden'))
-	}
+		.attr("y", (h) => path.value.centroid(h)[1])
+		.classed("small-text", true)
+		.attr("text-anchor", "middle")
+		.text(number)
+		.on('mouseover', (d, i) => {
+			tooltip.value.html(hover_text(i.properties))
+				.style('visibility', 'visible')
+		})
+		.on('mousemove', (event, d) => {
+			tooltip.value
+				.style('top', event.pageY - 10 + 'px')
+				.style('left', event.pageX + 10 + 'px')
+		})
+		.on('mouseout', () => tooltip.value.html(``).style('visibility', 'hidden'))
+}
 
 const getPolygonId = (name) => {
 	let replace_chars = [" ", "&", "(", ")", "."]
@@ -356,10 +490,18 @@ const getObservationsNo = (name) => {
 }
 
 const getUsersNo = (name) => {
-	const filtered_observations = all_observations.value
+	const obs = filtered_observations.value
 		.filter((d) => d[mode_key.value] == name)
 		.map((o) => o.user)
-	return [...new Set(filtered_observations)].length
+	return [...new Set(obs)].length
+}
+
+const getTaxaNo = (name) => {
+	const obs = filtered_observations.value
+		.filter((d) => d[mode_key.value] == name)
+		.map((o) => o.taxa)
+	return [...new Set(obs)].length
+
 }
 
 const hover_text = (properties) => {
@@ -367,6 +509,7 @@ const hover_text = (properties) => {
 		[capitalizeWords(mode_key.value), properties[mode_key.value]],
 		["Observations", getObservationsNo(properties[mode_key.value])],
 		["Users", getUsersNo(properties[mode_key.value])],
+		["Taxa", getTaxaNo(properties[mode_key.value])]
 	]
 	return createTableHTML(op)
 }
@@ -375,7 +518,7 @@ const createTableHTML = (data) => "<table>" + data.map((row) => `<tr>${row.map((
 
 const handleZoom = (e) => {
 	zoomTransform.value = e.transform
-	let text_size = (1/e.transform.k * .8)
+	let text_size = (1 / e.transform.k * .8)
 	svg.value.selectAll('.poly_text')
 		.attr('transform', e.transform)
 		.style('font-size', `${text_size}rem`)
@@ -386,8 +529,27 @@ const handleZoom = (e) => {
 		.attr("r", text_size)
 }
 
-const format_number = (num) =>  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-const capitalizeWords = (str) =>  str ? str.charAt(0).toUpperCase() + str.slice(1) : ""
+const format_number = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+const capitalizeWords = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : ""
+
+const toggleCycle = () => {
+	isCycling.value = !isCycling.value
+	console.log("here")
+	const all_years = [null, 2020,2021,2022,2023]
+	if(isCycling.value){
+		cycle_interval = setInterval(() => {
+			year.value = all_years[(all_years.indexOf(year.value) + 1) % all_years.length]
+		}, 1250); // Set the interval to 5 seconds (5000 milliseconds)
+	} else {
+		clearInterval(cycle_interval)
+	}
+}
+
+watch(isCycling, (newVal) => {
+	if(!newVal){
+		clearInterval(cycle_interval)
+	}
+})
 
 </script>
 

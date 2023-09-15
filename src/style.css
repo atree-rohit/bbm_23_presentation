@@ -64,8 +64,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.card {
-  padding: 2em;
+.btn-success{
+  background-color: rgb(12, 82, 27);
+}
+
+.btn-outline-light{
+  border: 1px solid white;
 }
 
 #app {
