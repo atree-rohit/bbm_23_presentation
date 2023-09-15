@@ -11,8 +11,8 @@
 .btns-row{
 	border: 1px solid #555;
 	border-radius: 1rem;
-	margin: .5rem 0;
-	padding: .25rem 1rem;
+	margin: .1rem 0;
+	padding: 0 1rem;
 }
 .btns-row .row-label{
 	font-size: 1.35rem;
@@ -174,7 +174,7 @@ svg {
 			/>
 			<button class="btn mx-5" @click="toggleCycle">{{ isCycling ? 'Pause' : 'Play' }}</button>
 		</div>
-		<div class="btns-row" v-if="mode == 'states'">
+		<div class="btns-row">
 			<span class="row-label">ID level</span>
 			<button
 				class="btn"
@@ -352,7 +352,7 @@ const init_legend = () => {
 	max.value = Math.max(...map_data.value.values())
 	colors.value = d3.scaleLinear()
 		.domain([0, 1, max.value / 3, max.value])
-		.range(["#c33", "#488", "#fd0", "#24ff00"])
+		.range(["#c55", "#488", "#fd0", "#24ff00"])
 		.clamp(true)
 	legend.value = d3Legend.legendColor()
 		.shapeHeight(20)
@@ -443,7 +443,9 @@ const drawPolygonLabel = (base_text, polygon) => {
 			break
 		case "taxa": number = getTaxaNo(polygon.properties[mode_key.value])
 			break
-		
+	}
+	if(number == 0){
+		number = ""
 	}
 	
 	base_text
