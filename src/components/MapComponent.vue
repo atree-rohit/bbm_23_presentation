@@ -1,23 +1,4 @@
 <style>
-.switcher{
-	padding:0.25rem 2rem;
-	background-color: #444;
-}
-.switcher-sm .btn {
-	font-size: 0.9rem !important;
-	margin: .5rem 0.125rem;
-}
-
-.btns-row{
-	border: 1px solid #555;
-	border-radius: 1rem;
-	margin: .1rem 0;
-	padding: 0 1rem;
-}
-.btns-row .row-label{
-	font-size: 1.35rem;
-	padding-right: 2rem;
-}
 
 #map {
 	/* display: flex;
@@ -141,6 +122,36 @@ svg {
 .mx-5{
 	margin: 0 3.5rem !important;
 }
+
+.stats-row{
+	display:flex;
+	justify-content: center;
+	margin-top: .5rem;
+}
+.stats-row .source{
+	/* border: 2px solid #755; */
+	font-size:2rem;
+	display: flex;
+	align-items: center;
+
+}
+	
+
+.stats-card{
+	border: 2px solid #667;
+	border-radius: 1rem;
+	margin: 0 0.5rem;
+	overflow: hidden;
+}
+
+.stats-card label{
+	padding: 0.1rem 3rem;
+	background: #003;
+}
+
+.stats-card > div{
+	font-size:2rem;
+}
 </style>
 
 <template>
@@ -175,6 +186,23 @@ svg {
 			<button class="btn mx-5" @click="toggleCycle">{{ isCycling ? 'Pause' : 'Play' }}</button>
 		</div>
 		<div class="btns-row">
+			<span class="row-label">Portal</span>
+			<button
+				class="btn"
+				:class="portal === null ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="portal = null"
+				v-text="`All`"
+			/>
+			<button
+				class="btn"
+				v-for="p in portals"
+				:key="p"
+				:class="p === portal ? 'btn-success' : 'btn-outline-light bg-light'"
+				@click="portal = p"
+				v-text="capitalizeWords(p)"
+			/>
+		</div>
+		<!-- <div class="btns-row">
 			<span class="row-label">ID level</span>
 			<button
 				class="btn"
@@ -190,7 +218,7 @@ svg {
 				@click="taxa_level = tl"
 				v-text="capitalizeWords(tl)"
 			/>
-		</div>
+		</div> -->
 		<div class="btns-row" v-if="mode == 'states'">
 			<span class="row-label">Map Labels</span>
 			<button
@@ -201,6 +229,23 @@ svg {
 				@click="label = l"
 				v-text="capitalizeWords(l)"
 			/>
+		</div>
+		<div class="stats-row">
+			<div class="source">
+				{{ (year == null) ? "All" : year }} Data
+			</div>
+			<div class="stats-card">
+				<div>{{stats.observations}}</div>
+				<label>Observations</label>
+			</div>
+			<div class="stats-card">
+				<div>{{stats.users}}</div>
+				<label>Users</label>
+			</div>
+			<div class="stats-card">
+				<div>{{stats.species}}</div>
+				<label>Species</label>
+			</div>
 		</div>
 
 	</div>
@@ -226,13 +271,16 @@ const mode = ref("states")
 const years = [2020, 2021, 2022, 2023]
 const year = ref(null)
 const isCycling = ref(false)
-let cycle_interval = null
-const taxa_levels = ref(["superfamily","family","subfamily","tribe", "genus","species"])
+const taxa_levels = ["superfamily","family","subfamily","tribe", "genus","species"]
 const taxa_level = ref(null)
+const portals = ["counts","inat","ibp","ifb"]
+const portal = ref(null)
+
 
 const labels = ["observations", "users", "taxa"]
 const label = ref("observations")
 
+let cycle_interval = null
 
 const polygons = ref(null)
 const path = ref(null)
@@ -250,24 +298,35 @@ const all_observations = computed(() => store.state.all_observations)
 const all_taxa = computed(() => store.state.taxa)
 const geojsons = computed(() => store.state.geojsons)
 
+const species_observations = computed(() => {
+	const taxaMap = new Map(all_taxa.value.map(t => [t.id, t]));
+
+	const op = all_observations.value
+		.filter((o) => o.taxa != null)
+		.map((o) => {
+			const taxa = taxaMap.get(o.taxa);
+			return {
+				...o,
+				taxa_details: taxa || null
+			};
+		})
+		.filter((o) => o.taxa_details && o.taxa_details.rank === "species");
+
+	return op;
+});
+
 const filtered_observations = computed(() => {
-	let op = all_observations.value
+	let op = species_observations.value
 	if (year.value) {
 		op = op.filter((d) => {
 			const date = d.date.split("-")
 			return parseInt(date[0]) == year.value
 		})
 	}
-	console.log(taxa_level.value)
-	if(taxa_level.value){
-		op = op.filter((d) => {
-			const taxa = all_taxa.value.find((t) => t.id == d.taxa)
-			if(taxa && taxa.rank == taxa_level.value){
-				return true
-			}
-			return false
-		})
+	if(portal.value){
+		op = op.filter((d) => d.portal == portal.value)
 	}
+	
 	return op
 })
 
@@ -296,10 +355,20 @@ const zoom = computed(() => {
 		.on('zoom', handleZoom)
 })
 
+const stats = computed(() => {
+	return {
+		observations: format_number(filtered_observations.value.length),
+		users: format_number([...new Set(filtered_observations.value.map((o) => o.user))].length),
+		species: format_number([...new Set(filtered_observations.value.map((o) => o.taxa))].length)
+	}
+})
 const geojson = computed(() => geojsons.value[mode.value])
 watch(geojson, () => init())
 watch(filtered_observations, () => init())
 watch(label, () => init())
+onMounted(() => {
+	init()
+})
 
 const init = () => {
 	console.log("init")
@@ -404,7 +473,7 @@ const render_map = () => {
 
 	svg.value.append("g")
 		.attr("class", "legend")
-		.attr("transform", `translate(${width.value * .5}, 25)`)
+		.attr("transform", `translate(${width.value * .25}, 25)`)
 		.call(legend.value)
 
 	svg.value.call(zoom.value)
